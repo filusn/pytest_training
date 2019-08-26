@@ -1,0 +1,5 @@
+[run]
+omit = 
+	venv_pytest/*
+	tests/*
+	pytest_training/__init__.py
