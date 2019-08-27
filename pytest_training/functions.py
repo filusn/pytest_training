@@ -1,3 +1,7 @@
+import sys
+import requests
+
+
 def add(a, b):
     return a+b
 
@@ -16,22 +20,27 @@ def t_or_f(x):
 #
 #
 # def linux_function():
-#     """
-#     This function
-#     :return:
-#     """
 #     print("This is linux-only function")
-#     return True
+#     if not sys.platform.startswith("win"):
+#         return True
+#     else:
+#         raise RuntimeError
 #
 #
-# def impossible_function():
-#     print("This method runs only with certain configuration")
+def impossible_function():
+    print("This method runs only with certain configuration")
+    response = requests.get('fifinow.com/amazing')
+    return response.text
 #
 # def raises():
 #     x = list()
 #     p = x[1]
 #
 #
-# if __name__ == '__main__':
-#     import xdoctest as xdoc
-#     xdoc.doctest_module(__file__)
+
+
+def getting_response(request):
+    if request.method == 'GET':
+        return {}
+    if request.method == 'POST':
+        return request.POST

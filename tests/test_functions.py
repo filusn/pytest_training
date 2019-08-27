@@ -39,7 +39,7 @@ def test_add():
 # # *************************************************
 #
 # @pytest.mark.skip(reason='Function is not implemented yet...')
-# def test_not_implemented():
+# def test_not_implemented(a. b):
 #     ...
 #
 #
@@ -54,12 +54,18 @@ def test_add():
 #
 # @pytest.mark.xfail
 # def test_impossible():
-#     assert functions.impossible_function() is True
+#     assert functions.impossible_function() == 'Filip is amazing!'
 #
 #
-# @pytest.mark.xfail
-# def test_impossible2():
-#     assert functions.impossible_function() is None
+
+def response_mock():
+    return 'Filip is amazing!'
+
+
+@pytest.mark.xfail
+def test_impossible2(monkeypatch):
+    monkeypatch.setattr(functions, 'impossible_function', response_mock)
+    assert functions.impossible_function() == 'Filip is amazing!'
 #
 #
 # @pytest.mark.xfail(raises=IndexError)
@@ -67,3 +73,28 @@ def test_add():
 #     assert functions.raises() is True
 
 # *************************************************
+
+
+def test_getting_response_get(mocker):
+    from pytest_training.functions import getting_response
+    req = mocker.MagicMock()
+    req.method = 'GET'
+    assert getting_response(req) == {}
+
+
+def test_getting_response_post(mocker):
+    from pytest_training.functions import getting_response
+    req = mocker.MagicMock()
+    req.method = 'POST'
+    req.POST = {'title': 'title', 'body': 'body'}
+    assert getting_response(req) == {'title': 'title', 'body': 'body'}
+
+
+def test_create_file(tmp_path):
+    CONTENT = 'content'
+    d = tmp_path / "sub"
+    d.mkdir()
+    p = d / "hello.txt"
+    p.write_text(CONTENT)
+    assert p.read_text() == CONTENT
+    assert len(list(tmp_path.iterdir())) == 1
